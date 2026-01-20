@@ -1,0 +1,70 @@
+# ============================================
+# SECRETS - NE JAMAIS COMMIT
+# ============================================
+.env
+*.env
+.env.local
+
+# ============================================
+# DATA - Keep structure but ignore content
+# ============================================
+
+# Ignore all PDFs by default
+data/papers/*.pdf
+
+# BUT include my own publications
+!data/papers/VISAPP_2024_157_CR.pdf
+!data/papers/algorithms-17-00352-v2-2.pdf
+!data/papers/*Boujou*.pdf
+
+# Ignore generated files and database
+data/figures/
+data/figure_descriptions.json
+chroma_db/
+
+# ============================================
+# PYTHON
+# ============================================
+__pycache__/
+*.py[cod]
+*.pyc
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+
+# ============================================
+# JUPYTER
+# ============================================
+.ipynb_checkpoints/
+*.ipynb
+
+# ============================================
+# IDE
+# ============================================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ============================================
+# OS
+# ============================================
+.DS_Store
+Thumbs.db
+.directory
+
+# ============================================
+# LOGS
+# ============================================
+*.log
+logs/
+
+# ============================================
+# DATABASE
+# ============================================
+*.db
+*.sqlite
+*.sqlite3

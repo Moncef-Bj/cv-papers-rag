@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Papers RAG - Research Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        header p {
+            color: #a0aec0;
+            font-size: 1rem;
+        }
+
+        /* Mode Toggle */
+        .mode-toggle {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .mode-btn {
+            padding: 10px 24px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            border: 2px solid #4a90a4;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: white;
+            color: #4a90a4;
+        }
+
+        .mode-btn.active {
+            background: #4a90a4;
+            color: white;
+        }
+
+        .mode-btn:hover:not(.active) {
+            background: #f0f7fa;
+        }
+
+        /* Search Box */
+        .search-box {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 12px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 14px 18px;
+            font-size: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: #4a90a4;
+        }
+
+        .search-btn {
+            padding: 14px 32px;
+            font-size: 1rem;
+            font-weight: 500;
+            background: #4a90a4;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .search-btn:hover {
+            background: #3d7a8c;
+        }
+
+        .search-btn:disabled {
+            background: #a0aec0;
+            cursor: not-allowed;
+        }
+
+        .examples {
+            margin-top: 16px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .examples span {
+            color: #4a90a4;
+            cursor: pointer;
+            margin-right: 12px;
+        }
+
+        .examples span:hover {
+            text-decoration: underline;
+        }
+
+        /* Stats */
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .stat-item {
+            background: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        }
+
+        .stat-item strong {
+            color: #4a90a4;
+        }
+
+        /* Answer Card (for Ask mode) */
+        .answer-card {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .answer-header {
+            background: linear-gradient(135deg, #2d6a4f 0%, #1b4332 100%);
+            color: white;
+            padding: 16px 20px;
+            font-weight: 500;
+        }
+
+        .answer-content {
+            padding: 24px;
+            font-size: 1rem;
+            line-height: 1.8;
+            white-space: pre-wrap;
+        }
+
+        .answer-content p {
+            margin-bottom: 12px;
+        }
+
+        /* Sources Section */
+        .sources-section {
+            border-top: 1px solid #e2e8f0;
+            padding: 20px;
+            background: #fafbfc;
+        }
+
+        .sources-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .source-item {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+
+        .source-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .source-name {
+            font-weight: 500;
+            color: #333;
+            font-size: 0.9rem;
+        }
+
+        .source-similarity {
+            color: #4a90a4;
+            font-size: 0.85rem;
+        }
+
+        .source-excerpt {
+            font-size: 0.85rem;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* Figures Grid */
+        .figures-section {
+            border-top: 1px solid #e2e8f0;
+            padding: 20px;
+            background: #f8fafc;
+        }
+
+        .figures-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 16px;
+        }
+
+        .figure-item {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .figure-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .figure-item img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            cursor: pointer;
+            background: #f0f0f0;
+        }
+
+        .figure-info {
+            padding: 10px;
+        }
+
+        .figure-caption {
+            font-size: 0.8rem;
+            color: #555;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Paper Card (for Search mode) */
+        .paper-card {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .paper-header {
+            background: linear-gradient(135deg, #4a90a4 0%, #3d7a8c 100%);
+            color: white;
+            padding: 16px 20px;
+        }
+
+        .paper-title {
+            font-size: 0.95rem;
+            font-weight: 500;
+            word-break: break-word;
+        }
+
+        .paper-meta {
+            display: flex;
+            gap: 20px;
+            margin-top: 8px;
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .paper-content {
+            padding: 20px;
+        }
+
+        .paper-text {
+            font-size: 0.95rem;
+            color: #444;
+            line-height: 1.7;
+            background: #f8fafc;
+            padding: 14px;
+            border-radius: 8px;
+            border-left: 3px solid #4a90a4;
+        }
+
+        .paper-figures {
+            border-top: 1px solid #e2e8f0;
+            padding: 20px;
+            background: #fafbfc;
+        }
+
+        .figures-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        .no-figures {
+            font-size: 0.85rem;
+            color: #999;
+            font-style: italic;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #e2e8f0;
+            border-top-color: #4a90a4;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .error {
+            background: #fee;
+            border: 1px solid #fcc;
+            color: #c00;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            cursor: pointer;
+        }
+
+        .modal img {
+            max-width: 90%;
+            max-height: 90%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 8px;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #888;
+            font-size: 0.85rem;
+        }
+
+        footer a {
+            color: #4a90a4;
+            text-decoration: none;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .results-header h2 {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>CV Papers Research Assistant</h1>
+        <p>Semantic search and AI-powered answers from Computer Vision papers</p>
+    </header>
+
+    <div class="container">
+        <!-- Mode Toggle -->
+        <div class="mode-toggle">
+            <button class="mode-btn active" id="askModeBtn" onclick="setMode('ask')">Ask AI</button>
+            <button class="mode-btn" id="searchModeBtn" onclick="setMode('search')">Search</button>
+        </div>
+
+        <div class="search-box">
+            <form class="search-form" onsubmit="handleSubmit(event)">
+                <input 
+                    type="text" 
+                    class="search-input" 
+                    id="searchInput"
+                    placeholder="Ask a question about CV papers..."
+                    autocomplete="off"
+                >
+                <button type="submit" class="search-btn" id="submitBtn">Ask</button>
+            </form>
+            <div class="examples" id="examples">
+                Try: 
+                <span onclick="submitQuery('How does GAF-Net handle person re-identification?')">GAF-Net re-identification</span>
+                <span onclick="submitQuery('What is transformer attention mechanism?')">transformer attention</span>
+                <span onclick="submitQuery('Explain multi-camera tracking approaches')">multi-camera tracking</span>
+            </div>
+        </div>
+
+        <div class="stats" id="stats" style="display: none;">
+            <div class="stat-item">Indexed: <strong id="statText">0</strong> chunks</div>
+            <div class="stat-item">Figures: <strong id="statFigures">0</strong></div>
+        </div>
+
+        <div id="results"></div>
+    </div>
+
+    <footer>
+        Built with FastAPI + ChromaDB + GPT-4o
+        <br>
+        <a href="/docs" target="_blank">API Documentation</a>
+    </footer>
+
+    <div class="modal" id="imageModal" onclick="closeModal()">
+        <span class="modal-close">&times;</span>
+        <img id="modalImage" src="" alt="Full size figure">
+    </div>
+
+    <script>
+        let currentMode = 'ask';
+        const API_BASE = '';
+        
+        function setMode(mode) {
+            currentMode = mode;
+            
+            document.getElementById('askModeBtn').classList.toggle('active', mode === 'ask');
+            document.getElementById('searchModeBtn').classList.toggle('active', mode === 'search');
+            
+            const input = document.getElementById('searchInput');
+            const btn = document.getElementById('submitBtn');
+            const examples = document.getElementById('examples');
+            
+            if (mode === 'ask') {
+                input.placeholder = 'Ask a question about CV papers...';
+                btn.textContent = 'Ask';
+                examples.innerHTML = `Try: 
+                    <span onclick="submitQuery('How does GAF-Net handle person re-identification?')">GAF-Net re-identification</span>
+                    <span onclick="submitQuery('What are transformer attention mechanisms?')">transformer attention</span>
+                    <span onclick="submitQuery('Explain multi-camera tracking approaches')">multi-camera tracking</span>`;
+            } else {
+                input.placeholder = 'Search papers...';
+                btn.textContent = 'Search';
+                examples.innerHTML = `Try: 
+                    <span onclick="submitQuery('person re-identification')">person re-identification</span>
+                    <span onclick="submitQuery('object detection CNN')">object detection CNN</span>
+                    <span onclick="submitQuery('transformer encoder')">transformer encoder</span>`;
+            }
+            
+            document.getElementById('results').innerHTML = '';
+        }
+        
+        async function loadStats() {
+            try {
+                const response = await fetch(`${API_BASE}/stats`);
+                const data = await response.json();
+                document.getElementById('statText').textContent = data.text_chunks.toLocaleString();
+                document.getElementById('statFigures').textContent = data.figures.toLocaleString();
+                document.getElementById('stats').style.display = 'flex';
+            } catch (error) {
+                console.error('Failed to load stats:', error);
+            }
+        }
+        
+        function submitQuery(query) {
+            document.getElementById('searchInput').value = query;
+            handleSubmit(new Event('submit'));
+        }
+        
+        async function handleSubmit(event) {
+            event.preventDefault();
+            
+            const query = document.getElementById('searchInput').value.trim();
+            if (!query) return;
+            
+            const btn = document.getElementById('submitBtn');
+            const resultsDiv = document.getElementById('results');
+            
+            btn.disabled = true;
+            btn.textContent = currentMode === 'ask' ? 'Thinking...' : 'Searching...';
+            resultsDiv.innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>${currentMode === 'ask' ? 'Analyzing papers and generating answer...' : 'Searching papers...'}</p>
+                </div>
+            `;
+            
+            try {
+                const endpoint = currentMode === 'ask' ? '/ask' : '/search';
+                const url = `${API_BASE}${endpoint}?q=${encodeURIComponent(query)}&n_sources=3&n_text=5`;
+                
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
+                
+                const data = await response.json();
+                
+                if (currentMode === 'ask') {
+                    displayAnswer(data);
+                } else {
+                    displaySearchResults(data);
+                }
+                
+            } catch (error) {
+                resultsDiv.innerHTML = `
+                    <div class="error">
+                        <strong>Error:</strong> ${error.message}
+                        <br>Make sure the API server is running and OPENAI_API_KEY is set.
+                    </div>
+                `;
+            } finally {
+                btn.disabled = false;
+                btn.textContent = currentMode === 'ask' ? 'Ask' : 'Search';
+            }
+        }
+        
+        function displayAnswer(data) {
+            const resultsDiv = document.getElementById('results');
+            
+            let figuresHtml = '';
+            if (data.figures && data.figures.length > 0) {
+                figuresHtml = `
+                    <div class="figures-section">
+                        <div class="figures-title">Related Architecture Figures</div>
+                        <div class="figures-grid">
+                            ${data.figures.map(fig => `
+                                <div class="figure-item">
+                                    <img src="${fig.image_url}" alt="${escapeHtml(fig.title)}"
+                                         onclick="openModal('${fig.image_url}')"
+                                         onerror="this.parentElement.style.display='none'">
+                                    <div class="figure-info">
+                                        <div class="figure-caption">${escapeHtml(fig.title || 'Architecture diagram')}</div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            let sourcesHtml = '';
+            if (data.sources && data.sources.length > 0) {
+                sourcesHtml = `
+                    <div class="sources-section">
+                        <div class="sources-title">Sources (${data.sources.length} papers)</div>
+                        ${data.sources.map(src => `
+                            <div class="source-item">
+                                <div class="source-header">
+                                    <span class="source-name">${escapeHtml(src.paper.substring(0, 60))}...</span>
+                                    <span class="source-similarity">${(src.similarity * 100).toFixed(1)}% match</span>
+                                </div>
+                                <div class="source-excerpt">${escapeHtml(src.excerpt)}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+            
+            resultsDiv.innerHTML = `
+                <div class="answer-card">
+                    <div class="answer-header">Answer to: "${escapeHtml(data.question)}"</div>
+                    <div class="answer-content">${formatAnswer(data.answer)}</div>
+                    ${figuresHtml}
+                    ${sourcesHtml}
+                </div>
+            `;
+        }
+        
+        function formatAnswer(text) {
+            // Convert markdown-like formatting to HTML
+            return escapeHtml(text)
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\n\n/g, '</p><p>')
+                .replace(/\n/g, '<br>');
+        }
+        
+        function displaySearchResults(data) {
+            const resultsDiv = document.getElementById('results');
+            
+            if (data.results.length === 0) {
+                resultsDiv.innerHTML = `<div class="empty-state"><h3>No results found</h3></div>`;
+                return;
+            }
+            
+            let html = `
+                <div class="results-header">
+                    <h2>Results for "${escapeHtml(data.query)}"</h2>
+                    <span>${data.stats.total} papers found</span>
+                </div>
+            `;
+            
+            for (const result of data.results) {
+                html += createPaperCard(result);
+            }
+            
+            resultsDiv.innerHTML = html;
+        }
+        
+        function createPaperCard(result) {
+            const content = result.content.length > 500 
+                ? result.content.substring(0, 500) + '...' 
+                : result.content;
+            
+            let figuresHtml = '';
+            if (result.figures && result.figures.length > 0) {
+                figuresHtml = `
+                    <div class="paper-figures">
+                        <div class="figures-title">Architecture Figures (${result.figures.length})</div>
+                        <div class="figures-grid">
+                            ${result.figures.map(fig => `
+                                <div class="figure-item">
+                                    <img src="${fig.image_url}" alt="${escapeHtml(fig.title)}"
+                                         onclick="openModal('${fig.image_url}')"
+                                         onerror="this.parentElement.style.display='none'">
+                                    <div class="figure-info">
+                                        <div class="figure-caption">${escapeHtml(fig.title || 'Architecture')}</div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            } else {
+                figuresHtml = `<div class="paper-figures"><div class="no-figures">No architecture figures</div></div>`;
+            }
+            
+            return `
+                <div class="paper-card">
+                    <div class="paper-header">
+                        <div class="paper-title">${escapeHtml(result.paper.replace('.pdf', '').substring(0, 80))}</div>
+                        <div class="paper-meta">
+                            <span>Similarity: ${(result.similarity * 100).toFixed(1)}%</span>
+                            <span>Page ${result.page}</span>
+                        </div>
+                    </div>
+                    <div class="paper-content">
+                        <div class="paper-text">${escapeHtml(content)}</div>
+                    </div>
+                    ${figuresHtml}
+                </div>
+            `;
+        }
+        
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        function openModal(imageUrl) {
+            document.getElementById('modalImage').src = imageUrl;
+            document.getElementById('imageModal').style.display = 'block';
+        }
+        
+        function closeModal() {
+            document.getElementById('imageModal').style.display = 'none';
+        }
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+        
+        loadStats();
+    </script>
+</body>
+</html>
