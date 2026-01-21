@@ -1000,15 +1000,23 @@ python src/index_figures.py
 
 ## Future Improvements
 
-- [ ] **CLIP embeddings** for visual figure search (image-to-image similarity)
-- [ ] **Docker containerization** for easy deployment
-- [ ] **PDF upload** via web interface (no need for command line)
-- [ ] **Citation graph** visualization
-- [ ] **Paper summarization** feature
-- [ ] **Streamlit dashboard** for advanced analytics
-- [ ] **Collaborative annotations** (highlight important passages)
-- [ ] **Export to Notion/Obsidian** for note-taking
-- [ ] **Automatic paper recommendations** based on your interests
+### Coming Soon
+- [ ] **LaTeX equation rendering** - Proper mathematical notation in answers
+- [ ] **Docker containerization** - One-command deployment
+
+### Planned
+- [ ] **PDF upload via web interface** - No command line needed
+- [ ] **Paper summarization** - Auto-generate TL;DR for each paper
+- [ ] **CLIP embeddings** - Visual similarity search for figures
+
+### Under Consideration
+- [ ] **Citation graph visualization** - Explore paper relationships
+- [ ] **Automatic paper recommendations** - Based on reading history
+- [ ] **Streamlit dashboard** - Advanced analytics
+
+### Ideas
+- [ ] **Export to Notion/Obsidian** - Note-taking integrations
+- [ ] **Collaborative annotations** - Highlight and share insights
 ---
 
 ## Contributing
