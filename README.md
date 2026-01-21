@@ -186,11 +186,11 @@ rag-cv-papers/
 ### Step 1: Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/rag-cv-papers.git
+git clone https://github.com/Moncef-Bj/rag-cv-papers.git
 cd rag-cv-papers
 ```
 
-### Step 2: Create virtual environment
+### Step 2: Create a virtual environment
 
 ```bash
 # Windows
