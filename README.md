@@ -1,4 +1,4 @@
-# CV Papers RAG - Multimodal Research Assistant
+# Computer Vision (CV) Papers RAG - Multimodal Research Assistant
 
 A **Retrieval-Augmented Generation (RAG)** system for searching and querying Computer Vision research papers. Ask questions in natural language and get AI-synthesized answers with sources and architecture figures.
 
@@ -1005,14 +1005,10 @@ python src/index_figures.py
 - [ ] **PDF upload** via web interface (no need for command line)
 - [ ] **Citation graph** visualization
 - [ ] **Paper summarization** feature
-- [ ] **Multi-language support** (French, Chinese, etc.)
-- [ ] **Groq/Ollama** as free LLM alternatives
 - [ ] **Streamlit dashboard** for advanced analytics
 - [ ] **Collaborative annotations** (highlight important passages)
 - [ ] **Export to Notion/Obsidian** for note-taking
 - [ ] **Automatic paper recommendations** based on your interests
-- [ ] **Email digest** of new papers matching your topics
-
 ---
 
 ## Contributing
@@ -1056,11 +1052,9 @@ If you use this project in your research, please cite:
 ```
 
 ---
-
 ## Star History
 
 If you find this project useful, please consider giving it a star!
 
 ---
-
 **Built with care by a CV researcher, for CV researchers**
